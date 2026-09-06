@@ -33,16 +33,18 @@ export function PostSearch() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="mb-10 flex flex-col gap-3 sm:flex-row"
+      className="mb-12 flex flex-col gap-3 sm:flex-row sm:items-end"
     >
-      <Input
-        id="search"
-        type="search"
-        value={search}
-        onChange={(event) => setSearch(event.target.value)}
-        placeholder="Buscar posts..."
-        className="flex-1"
-      />
+      <div className="flex-1">
+        <Input
+          id="search"
+          type="search"
+          label="Encontre um conteúdo"
+          value={search}
+          onChange={(event) => setSearch(event.target.value)}
+          placeholder="Buscar por título ou conteúdo..."
+        />
+      </div>
 
       <Button type="submit">Buscar</Button>
     </form>
