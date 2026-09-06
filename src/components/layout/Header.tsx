@@ -1,33 +1,52 @@
 import Link from "next/link";
+import { getAuthUser } from "@/lib/auth";
 
-export function Header() {
+export default async function Header() {
+  const user = await getAuthUser();
+
   return (
     <header className="border-b border-border bg-white">
-      <div className="mx-auto flex h-18 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+        {/* Logo */}
         <Link
           href="/"
-          className="text-2xl font-bold tracking-tight text-primary"
+          className="text-2xl font-bold text-primary transition hover:text-primary-dark"
         >
           Educa Blog
         </Link>
 
-        <nav
-          aria-label="Navegação principal"
-          className="flex items-center gap-6"
-        >
+        {/* Navegação */}
+        <nav className="flex items-center gap-6">
           <Link
             href="/"
-            className="text-sm font-semibold text-muted transition-colors hover:text-primary"
+            className="text-sm font-medium text-foreground transition hover:text-primary"
           >
             Início
           </Link>
 
-          <Link
-            href="/login"
-            className="rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-primary-dark"
-          >
-            Entrar
-          </Link>
+          {user ? (
+            <>
+              <span className="text-sm text-muted">
+                Olá, <strong className="text-foreground">{user.name}</strong>
+              </span>
+
+              <form action="/api/auth/logout" method="POST">
+                <button
+                  type="submit"
+                  className="text-sm font-medium text-primary transition hover:text-primary-dark"
+                >
+                  Sair
+                </button>
+              </form>
+            </>
+          ) : (
+            <Link
+              href="/login"
+              className="text-sm font-medium text-primary transition hover:text-primary-dark"
+            >
+              Entrar
+            </Link>
+          )}
         </nav>
       </div>
     </header>
