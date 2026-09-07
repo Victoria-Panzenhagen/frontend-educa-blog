@@ -28,7 +28,7 @@ export function LoginForm() {
         password,
       });
 
-      router.push("/");
+      router.push("/admin/posts");
       router.refresh();
     } catch (error) {
       setError(

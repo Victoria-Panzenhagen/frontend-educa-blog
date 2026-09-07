@@ -1,12 +1,11 @@
+import { Discipline } from "./discipline";
+
 export interface Post {
   id: number;
   title: string;
   content: string;
   autor: string;
-  discipline: {
-    id: number;
-    name: string;
-  };
+  discipline: Discipline;
   createdAt: string;
 }
 
