@@ -43,8 +43,8 @@ export async function PUT(
 }
 
 export async function DELETE(
-    _request: Request,
-    { params }: RouteParams,
+    request: Request,
+    { params }: { params: Promise<{ id: string }> },
 ) {
     try {
         const { id } = await params;
@@ -53,11 +53,12 @@ export async function DELETE(
             method: 'DELETE',
         });
 
-        return new NextResponse(null, {
-            status: 204,
-        });
+        return NextResponse.json(
+            { message: 'Post excluído com sucesso.' },
+            { status: 200 },
+        );
     } catch (error) {
-        console.error('Erro ao excluir post:', error);
+        console.error('Erro ao excluir post: -->>> ', error);
 
         if (error instanceof ApiError) {
             return NextResponse.json(

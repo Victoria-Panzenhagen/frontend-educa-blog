@@ -19,33 +19,33 @@ export default function AdminPostsTable({ posts }: AdminPostsTableProps) {
   const [success, setSuccess] = useState("");
 
   async function handleDelete() {
-    if (!postToDelete) {
-      return;
-    }
+    if (!postToDelete) return;
+
+    const deletedPostId = postToDelete.id;
 
     try {
       setDeleting(true);
       setError("");
       setSuccess("");
 
-      const response = await fetch(`/api/posts/${postToDelete.id}`, {
+      const response = await fetch(`/api/posts/${deletedPostId}`, {
         method: "DELETE",
       });
 
-      if (!response.ok) {
-        const data = await response.json();
+      const data = await response.json().catch(() => null);
 
-        throw new Error(data.message || "Não foi possível excluir o post.");
+      if (!response.ok) {
+        throw new Error(data?.message || "Não foi possível excluir o post.");
       }
 
       setPostsData((current) => ({
         ...current,
-        total: current.total - 1,
-        data: current.data.filter((post) => post.id !== postToDelete.id),
+        total: Math.max(0, current.total - 1),
+        data: current.data.filter((post) => post.id !== deletedPostId),
       }));
 
-      setSuccess("Post excluído com sucesso.");
       setPostToDelete(null);
+      setSuccess("Post excluído com sucesso.");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erro ao excluir o post.");
     } finally {
@@ -150,31 +150,86 @@ export default function AdminPostsTable({ posts }: AdminPostsTableProps) {
 
                   <td className="px-6 py-4">
                     <div className="flex justify-end gap-2">
-                      <Link
-                        href={`/posts/${post.id}`}
-                        className="rounded-lg border border-border px-3 py-2 text-sm font-medium text-foreground transition hover:border-primary hover:text-primary"
-                      >
-                        Visualizar
-                      </Link>
+                      <div className="flex items-center gap-2">
+                        <Link
+                          href={`/posts/${post.id}`}
+                          title="Visualizar post"
+                          aria-label={`Visualizar post ${post.title}`}
+                          className="rounded-lg p-2 text-muted transition hover:bg-primary/10 hover:text-primary"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            className="h-5 w-5"
+                            aria-hidden="true"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M2.25 12s3.75-6 9.75-6 9.75 6 9.75 6-3.75 6-9.75 6-9.75-6-9.75-6Z"
+                            />
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                            />
+                          </svg>
+                        </Link>
 
-                      <Link
-                        href={`/posts/${post.id}/editar`}
-                        className="rounded-lg border border-border px-3 py-2 text-sm font-medium text-foreground transition hover:border-primary hover:text-primary"
-                      >
-                        Editar
-                      </Link>
+                        <Link
+                          href={`/posts/${post.id}/editar`}
+                          title="Editar post"
+                          aria-label={`Editar post ${post.title}`}
+                          className="rounded-lg p-2 text-muted transition hover:bg-primary/10 hover:text-primary"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            className="h-5 w-5"
+                            aria-hidden="true"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="m16.862 4.487 2.651 2.651M4.5 19.5l4.5-1 10.513-10.513a1.875 1.875 0 0 0-2.651-2.651L6.349 15.849l-1.849 3.651Z"
+                            />
+                          </svg>
+                        </Link>
 
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setError("");
-                          setSuccess("");
-                          setPostToDelete(post);
-                        }}
-                        className="rounded-lg border border-red-200 px-3 py-2 text-sm font-medium text-red-600 transition hover:bg-red-50"
-                      >
-                        Excluir
-                      </button>
+                        <button
+                          type="button"
+                          title="Excluir post"
+                          aria-label={`Excluir post ${post.title}`}
+                          onClick={() => {
+                            setPostToDelete(post);
+                            setError("");
+                            setSuccess("");
+                          }}
+                          className="rounded-lg p-2 text-muted transition hover:bg-red-50 hover:text-red-600"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            className="h-5 w-5"
+                            aria-hidden="true"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M6 7.5h12M9.75 7.5V5.25h4.5V7.5m-6.75 0 .75 11.25h7.5L16.5 7.5M10.5 11v4.5m3-4.5v4.5"
+                            />
+                          </svg>
+                        </button>
+                      </div>{" "}
                     </div>
                   </td>
                 </tr>

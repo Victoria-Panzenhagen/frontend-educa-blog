@@ -113,9 +113,7 @@ export default function PostForm({ mode, initialData }: PostFormProps) {
         throw new Error(data.message || "Não foi possível salvar o post.");
       }
 
-      const postId = isEdit ? initialData?.id : data.id;
-
-      router.push(`/posts/${postId}`);
+      router.push(`/admin/posts`);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erro ao salvar o post.");
     } finally {

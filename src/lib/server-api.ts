@@ -37,27 +37,31 @@ export async function serverApiFetch<T>(
         cache: 'no-store',
     });
 
-    if (!response.ok) {
-        const errorBody = await response.text();
+    const responseBody = await response.text();
 
+    if (!response.ok) {
         let message = 'Erro ao comunicar com a API.';
 
-        try {
-            const parsedError = JSON.parse(errorBody);
+        if (responseBody) {
+            try {
+                const parsedError = JSON.parse(responseBody);
 
-            if (typeof parsedError.message === 'string') {
-                message = parsedError.message;
-            } else if (Array.isArray(parsedError.message)) {
-                message = parsedError.message.join(', ');
-            }
-        } catch {
-            if (errorBody) {
-                message = errorBody;
+                if (typeof parsedError.message === 'string') {
+                    message = parsedError.message;
+                } else if (Array.isArray(parsedError.message)) {
+                    message = parsedError.message.join(', ');
+                }
+            } catch {
+                message = responseBody;
             }
         }
 
         throw new ApiError(message, response.status);
     }
 
-    return response.json();
+    if (!responseBody) {
+        return undefined as T;
+    }
+
+    return JSON.parse(responseBody) as T;
 }
