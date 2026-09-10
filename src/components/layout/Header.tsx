@@ -26,6 +26,10 @@ export default async function Header() {
                 Meus posts
               </Link>
 
+              <Link href="/admin/users" className="transition hover:opacity-80">
+                Meu perfil
+              </Link>
+
               <span className="hidden sm:inline">Olá, {user.name}</span>
 
               <form action="/api/auth/logout" method="POST">

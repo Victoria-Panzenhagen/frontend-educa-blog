@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
@@ -79,6 +80,16 @@ export function LoginForm() {
       <Button type="submit" className="w-full" disabled={loading}>
         {loading ? "Entrando..." : "Entrar"}
       </Button>
+
+      <p className="text-center text-sm text-muted">
+        Ainda não tem uma conta?{" "}
+        <Link
+          href="/cadastro"
+          className="font-semibold text-primary transition hover:text-primary-dark"
+        >
+          Criar cadastro
+        </Link>
+      </p>
     </form>
   );
 }
