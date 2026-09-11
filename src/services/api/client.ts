@@ -1,7 +1,7 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 if (!API_URL) {
-  throw new Error('NEXT_PUBLIC_API_URL não configurada');
+  throw new Error("NEXT_PUBLIC_API_URL não configurada");
 }
 
 export async function apiFetch<T>(
@@ -11,14 +11,36 @@ export async function apiFetch<T>(
   const response = await fetch(`${API_URL}${endpoint}`, {
     ...options,
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...options?.headers,
     },
   });
 
+  const responseBody = await response.text();
+
   if (!response.ok) {
-    throw new Error(`Erro na API: ${response.status}`);
+    let message = `Erro na API: ${response.status}`;
+
+    if (responseBody) {
+      try {
+        const data = JSON.parse(responseBody);
+
+        if (typeof data.message === "string") {
+          message = data.message;
+        } else if (Array.isArray(data.message)) {
+          message = data.message.join(", ");
+        }
+      } catch {
+        message = responseBody;
+      }
+    }
+
+    throw new Error(message);
   }
 
-  return response.json();
+  if (!responseBody) {
+    return undefined as T;
+  }
+
+  return JSON.parse(responseBody) as T;
 }

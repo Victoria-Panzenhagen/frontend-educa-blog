@@ -7,7 +7,7 @@ export default async function Header() {
 
   return (
     <header className="border-b border-border bg-primary text-white">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+      <div className="mx-auto flex max-w-6xl flex-col gap-3 px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
         <Link
           href="/"
           className="text-xl font-bold transition hover:opacity-90"
@@ -15,7 +15,7 @@ export default async function Header() {
           Educa Blog
         </Link>
 
-        <nav className="flex items-center gap-5 text-sm">
+        <nav className="flex flex-wrap items-center gap-3 text-sm sm:gap-5">
           <Link href="/" className="transition hover:opacity-80">
             Início
           </Link>
