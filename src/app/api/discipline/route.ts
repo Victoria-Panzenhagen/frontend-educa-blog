@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_URL = process.env.API_INTERNAL_URL;
 
 if (!API_URL) {
-    throw new Error('NEXT_PUBLIC_API_URL não configurada');
+    throw new Error('API_INTERNAL_URL não configurada');
 }
 
 export async function GET(request: Request) {

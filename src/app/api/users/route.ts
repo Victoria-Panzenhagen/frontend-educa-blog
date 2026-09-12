@@ -15,10 +15,10 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    const apiUrl = process.env.API_INTERNAL_URL;
 
     if (!apiUrl) {
-      throw new Error("NEXT_PUBLIC_API_URL não configurada");
+      throw new Error("API_INTERNAL_URL não configurada");
     }
 
     const response = await fetch(`${apiUrl}/users`, {

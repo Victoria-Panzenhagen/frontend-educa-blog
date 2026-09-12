@@ -4,7 +4,7 @@ import PostForm from "@/components/forms/PostForm";
 import { getAuthUser } from "@/lib/auth";
 import type { Post } from "@/types/post";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_URL = process.env.API_INTERNAL_URL;
 
 interface EditPostPageProps {
   params: Promise<{
