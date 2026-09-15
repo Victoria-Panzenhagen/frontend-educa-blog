@@ -191,20 +191,19 @@ O projeto possui configuração Docker para executar o frontend junto com a API,
 
 O Docker Compose utilizado para o ambiente integrado está localizado no projeto do backend.
 
-A estrutura esperada dos projetos é:
+## Clonando os projetos
+Clone os dois repositórios mantendo a estrutura esperada:
 
-```text
+cd ~/Projetos
+
+git clone URL_DO_REPOSITORIO_BACKEND post-api (https://github.com/Victoria-Panzenhagen/post-api.git)
+git clone URL_DO_REPOSITORIO_FRONTEND frontend-educa-blog
+```
+
+A estrutura deverá ficar:
 Projetos
 ├── post-api
-│   ├── docker-compose.yml
-│   └── ...
-│
 └── frontend-educa-blog
-    ├── Dockerfile
-    ├── .dockerignore
-    ├── package.json
-    └── ...
-```
 
 O serviço `frontend` do Docker Compose utiliza o frontend através do caminho relativo:
 
@@ -217,7 +216,7 @@ O serviço `frontend` do Docker Compose utiliza o frontend através do caminho r
 A partir do diretório do backend:
 
 ```bash
-cd ~/post-api
+cd ~/Projetos/post-api
 ```
 
 Execute:
@@ -227,6 +226,8 @@ docker compose up --build
 ```
 
 Esse comando inicializa todos os serviços necessários para a aplicação.
+
+Não é necessário executar docker build ou informar manualmente o caminho do frontend. O próprio docker-compose.yml utiliza o diretório ../frontend-educa-blog como contexto de build.
 
 ### Serviços Docker
 
